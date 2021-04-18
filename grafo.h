@@ -37,7 +37,7 @@ class GRAFO
 	unsigned            dirigido;  //0 si el grafo es no dirigido y 1 si es dirigido
 	unsigned            n;         // numero de NODOS
 	unsigned            m;         // numero de ARCOS
-	vector<LA_nodo>     LS;        // Lista de adyacencia de los sucesores: es una matriz dode cada fila posiblemente es posiblemente de distinto tama�o
+	vector<LA_nodo>     LS;        // Lista de adyacencia de los sucesores: es una matriz donde cada fila posiblemente es posiblemente de distinto tama�o
 	vector<LA_nodo>     LP;        // Lista de adyacencia de los predecesores: es una matriz dode cada fila posiblemente es posiblemente de distinto tama�o
 	vector<LA_nodo>     A;         // Matriz de adyacencia, tanto adyacencia como costes
 	void destroy();                // Destructor del LS, A, y LP, en su caso
@@ -51,8 +51,8 @@ public:
      void Info_Grafo(); // devuelve informaci�n b�sica del grafo
      void Mostrar_Listas(int l);  //Muestra la lista de adyacencia
      void Mostrar_Matriz(); //Muestra la matriz de adyacencia: nodos y costes
-     void ListaPredecesores(); //Recorre la lista de sucesores LS para construir la de predecesores, LP
-     void RecorridoProfundidad(); //Construye un recorrido en profundidad desde un nodo inicial
+     //void ListaPredecesores(); //Recorre la lista de sucesores LS para construir la de predecesores, LP
+     //void RecorridoProfundidad(); //Construye un recorrido en profundidad desde un nodo inicial
      void RecorridoAmplitud(); //Construye un recorrido en amplitud desde un nodo inicial
      ~GRAFO(); //Destructor del objeto grafo
 };

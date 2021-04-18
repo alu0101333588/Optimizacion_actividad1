@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 {
     int error_apertura;
     char nombrefichero[85], opcion;
-    clrscr();
+    //clrscr();
     //Si tenemos el nombre del primer fichero por argumento, es una excepcion, y lo intentamos cargar, si no, lo pedimos desde teclado
     if (argc > 1)
     {
@@ -55,21 +55,21 @@ int main(int argc, char *argv[])
     if (error_apertura == 1)
     {
         cout << "Error en la apertura del fichero desde argumento: revisa nombre y formato" << endl;
-        pressanykey();
-        clrscr();
+        //pressanykey();
+        //clrscr();
     }
     else
     {
         cout<< "Grafo cargado desde el fichero " << nombrefichero << endl;
-        pressanykey();
-        clrscr();
+        //pressanykey();
+        //clrscr();
         do
         {
             menu(G.Es_dirigido(), opcion);
             switch (opcion)
             {
                 case 'c' :
-                    clrscr();
+                    //clrscr();
          	    cout << "Introduce el nombre completo del fichero de datos" << endl;
                     cin >> nombrefichero;
                     G.actualizar(nombrefichero, error_apertura);
@@ -81,16 +81,16 @@ int main(int argc, char *argv[])
                     {
                         cout << "Fichero cargado correctamente desde " << nombrefichero << endl;
                     };
-                    pressanykey();
-                    clrscr();
+                    //pressanykey();
+                    //clrscr();
                     break;
 
                 case 'i' :
-                    clrscr();
+                    //clrscr();
 		    cout << "Grafo cargado desde " << nombrefichero << endl;
                     G.Info_Grafo();
-                    pressanykey();
-                    clrscr();
+                    //pressanykey();
+                    //clrscr();
                     break;
 
 		 //Situar aqu� el resto de opciones del men�

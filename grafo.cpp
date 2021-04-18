@@ -30,8 +30,7 @@ void GRAFO :: build (char nombrefichero[85], int &errorapertura)
     ElementoLista     dummy;
 	ifstream textfile;
 	textfile.open(nombrefichero);
-	if (textfile.is_open())
-    {
+	if (textfile.is_open()){
 		unsigned i, j, k;
 		// leemos por conversion implicita el numero de nodos, arcos y el atributo dirigido
 		textfile >> (unsigned &) n >> (unsigned &) m >> (unsigned &) dirigido;
@@ -39,25 +38,42 @@ void GRAFO :: build (char nombrefichero[85], int &errorapertura)
 		// creamos las n listas de sucesores
 		LS.resize(n);
 	        // leemos los m arcos
-		for (k=0;k<m;k++)
-        	{
+		for (k=0;k<m;k++){
 			textfile >> (unsigned &) i  >> (unsigned &) j >> (int &) dummy.c;
+
+            LS[i-1].push_back(dummy);
+
+            if(dirigido == 1){
+                j = i;
+                LP[j-1].push_back(dummy);
+            } else {
+                A[i-1].push_back(dummy);
+            }
+        }
+
+        errorapertura = 0;
+
+
+
+
 			//damos los valores a dummy.j y dummy.c
-			//situamos en la posici�n del nodo i a dummy mediante push_backM
+			//situamos en la posición del nodo i a dummy mediante push_backM
 			//pendiente de hacer un segundo push_back si es no dirigido. O no.
 			//pendiente la construcci�n de LP, si es dirigido
 			//pendiente del valor a devolver en errorapertura
-			...
+			
+    } else {
+        errorapertura = 1;
+    }
 
 }
 
-void GRAFO::ListaPredecesores()
-{
+/*void GRAFO::ListaPredecesores(){ 
 
-}
+}*/
 
-GRAFO::~GRAFO()
-{
+GRAFO::~GRAFO(){
+
 	destroy();
 }
 
@@ -74,28 +90,56 @@ void GRAFO:: actualizar (char nombrefichero[85], int &errorapertura)
     build(nombrefichero, errorapertura);
 }
 
-unsigned GRAFO::Es_dirigido()
-{
+unsigned GRAFO::Es_dirigido(){
+
+    if(dirigido == 1){
+        return 1;
+    } else {
+        return 0;
+    }
 
 }
 
-void GRAFO::Info_Grafo()
-{
+void GRAFO::Info_Grafo(){
+    //std::cout << "Hay " << n << " nodos, " << m << " aristas ";
+    if (dirigido == 1){
+        //std::cout << "y es dirigido" << std::endl;
+    } else{
+        //std::cout << "y es no dirigido" << std::endl;
+    }
+
 
 }
 
-void Mostrar_Lista(vector<LA_nodo> L)
-{
+void Mostrar_Lista(vector<LA_nodo> L){
+    
 
 }
 
-void GRAFO :: Mostrar_Listas (int l)
-{
+void GRAFO :: Mostrar_Listas (int l){
+
+    if(l == 0){
+        for (int i=0;i<n;i++){
+
+            std::cout << "LS[" << i << "] " << LS[i] << std::endl;
+        }    
+        for (int i=0;i<n;i++){
+
+            std::cout << "LP[" << i << "] " << LP[i] << std::endl;
+        }      
+
+    } else {
+        for (int i=0;i<n;i++){
+
+            std::cout << "A[" << i << "] " << A[i] << std::endl;
+        }  
+    }
 
 }
 
 void GRAFO::Mostrar_Matriz() //Muestra la matriz de adyacencia, tanto los nodos adyacentes como sus costes
 {
+    std::cout << "nada" << std::endl; // TEMPORAL
 
 }
 
@@ -113,6 +157,8 @@ void GRAFO::dfs_num(unsigned i, vector<LA_nodo>  L, vector<bool> &visitado, vect
 
 void GRAFO::RecorridoProfundidad()
 {
+    std::cout << "nada" << std::endl; // TEMPORAL
+
 
 }
 
@@ -153,6 +199,8 @@ void GRAFO::bfs_num(	unsigned i, //nodo desde el que realizamos el recorrido en 
 
 void RecorridoAmplitud(); //Construye un recorrido en amplitud desde un nodo inicial
 {
+    std::cout << "nada" << std::endl; // TEMPORAL
+
 
 }
 
