@@ -1,5 +1,5 @@
  /*
- *  GRAFO.CPP - Plantilla para la implementaci�n de la clase GRAFOS
+ *  GRAFO.CPP - Plantilla para la implementación de la clase GRAFOS
  *
  *
  *  Autores : Antonio Sedeno Noda, Sergio Alonso
@@ -37,43 +37,45 @@ void GRAFO :: build (char nombrefichero[85], int &errorapertura)
 		// los nodos internamente se numeran desde 0 a n-1
 		// creamos las n listas de sucesores
 		LS.resize(n);
+        A.resize(n);
+        LP.resize(n);
 	        // leemos los m arcos
 		for (k=0;k<m;k++){
-			textfile >> (unsigned &) i  >> (unsigned &) j >> (int &) dummy.c;
+            textfile >> (unsigned &) i  >> (unsigned &) j >> (int &) dummy.c;
+			//damos los valores a dummy.j y dummy.c
+            
+            dummy.j = j-1;
 
-            LS[i-1].push_back(dummy);
+			//situamos en la posición del nodo i a dummy mediante push_backM
+			//pendiente de hacer un segundo push_back si es no dirigido. O no.
+			//pendiente la construcción de LP, si es dirigido
+			//pendiente del valor a devolver en errorapertura
+            
+            //LS[i-1].push_back(dummy);
+            //A[i-1].push_back(dummy);
 
             if(dirigido == 1){
-                j = i;
+
+                LS[i-1].push_back(dummy);
+                dummy.j = i-1;
                 LP[j-1].push_back(dummy);
+
             } else {
                 A[i-1].push_back(dummy);
             }
         }
-
-        errorapertura = 0;
-
-
-
-
-			//damos los valores a dummy.j y dummy.c
-			//situamos en la posición del nodo i a dummy mediante push_backM
-			//pendiente de hacer un segundo push_back si es no dirigido. O no.
-			//pendiente la construcci�n de LP, si es dirigido
-			//pendiente del valor a devolver en errorapertura
-			
-    } else {
-        errorapertura = 1;
     }
 
 }
 
-/*void GRAFO::ListaPredecesores(){ 
+
+/*void GRAFO::ListaPredecesores()
+{
 
 }*/
 
-GRAFO::~GRAFO(){
-
+GRAFO::~GRAFO()
+{
 	destroy();
 }
 
@@ -92,54 +94,77 @@ void GRAFO:: actualizar (char nombrefichero[85], int &errorapertura)
 
 unsigned GRAFO::Es_dirigido(){
 
-    if(dirigido == 1){
-        return 1;
-    } else {
+    if(dirigido == 0){
         return 0;
+    } else {
+        return 1;
     }
 
 }
 
 void GRAFO::Info_Grafo(){
-    //std::cout << "Hay " << n << " nodos, " << m << " aristas ";
-    if (dirigido == 1){
-        //std::cout << "y es dirigido" << std::endl;
-    } else{
-        //std::cout << "y es no dirigido" << std::endl;
+
+    std::cout << "Nodos: " << n << std::endl;
+    std::cout << "Aristas: " << m << std::endl;
+    if(dirigido == 0){
+        std::cout << "Grafo no dirigido" << std::endl;
+    } else {
+        std::cout << "Grafo dirigido" << std::endl;
     }
-
-
-}
-
-void Mostrar_Lista(vector<LA_nodo> L){
+    std::cout << std::endl;
     
 
 }
 
+/*void Mostrar_Lista(vector<LA_nodo> L)
+{
+
+}*/
+
 void GRAFO :: Mostrar_Listas (int l){
+
+
+    
+    if(l == 1){
+        for (int i=0;i<n;i++){
+            int tamano = LS[i].size();
+            int h = 0;
+            while (h != tamano){
+                std::cout << "LS[" << i << "][" << h << "] " << LS[i][h].j  << " | " << LS[i][h].c << std::endl;
+                h++;
+            }
+        }
+        std::cout << std::endl;
+    } 
 
     if(l == 0){
         for (int i=0;i<n;i++){
+            int tamano = A[i].size();
+            int h = 0;
+            while (h != tamano){
+                std::cout << "A[" << i << "][" << h << "] " << A[i][h].j  << " | " << A[i][h].c << std::endl;
+                h++;
+            }
+        }
+        std::cout << std::endl;
+    }    
 
-            std::cout << "LS[" << i << "] " << LS[i] << std::endl;
-        }    
+    if(l == -1){
         for (int i=0;i<n;i++){
-
-            std::cout << "LP[" << i << "] " << LP[i] << std::endl;
-        }      
-
-    } else {
-        for (int i=0;i<n;i++){
-
-            std::cout << "A[" << i << "] " << A[i] << std::endl;
-        }  
+            int tamano = LP[i].size();
+            int h = 0;
+            while (h != tamano){
+                std::cout << "LP[" << i << "][" << h << "] " << LP[i][h].j  << " | " << LP[i][h].c << std::endl;
+                h++;
+            }
+        }
+        std::cout << std::endl;
     }
 
 }
 
 void GRAFO::Mostrar_Matriz() //Muestra la matriz de adyacencia, tanto los nodos adyacentes como sus costes
 {
-    std::cout << "nada" << std::endl; // TEMPORAL
 
 }
 
@@ -155,18 +180,16 @@ void GRAFO::dfs_num(unsigned i, vector<LA_nodo>  L, vector<bool> &visitado, vect
     postnum[postnum_ind++]=i;//asignamos el orden de visita posnum que corresponde al nodo i
 }
 
-void GRAFO::RecorridoProfundidad()
+/*void GRAFO::RecorridoProfundidad()
 {
-    std::cout << "nada" << std::endl; // TEMPORAL
 
-
-}
+}*/
 
 void GRAFO::bfs_num(	unsigned i, //nodo desde el que realizamos el recorrido en amplitud
 				vector<LA_nodo>  L, //lista que recorremos, LS o LP; por defecto LS
 				vector<unsigned> &pred, //vector de predecesores en el recorrido
 				vector<unsigned> &d) //vector de distancias a nodo i+1
-//Recorrido en amplitud con la construcci�n de pred y d: usamos la cola
+//Recorrido en amplitud con la construcción de pred y d: usamos la cola
 {
     vector<bool> visitado; //creamos e iniciamos el vector visitado
     visitado.resize(n, false);  
@@ -180,27 +203,25 @@ void GRAFO::bfs_num(	unsigned i, //nodo desde el que realizamos el recorrido en 
     queue<unsigned> cola; //creamos e inicializamos la cola
     cola.push(i);//iniciamos el recorrido desde el nodo i+1
  
-    while (!cola.empty()) //al menos entra una vez al visitar el nodo i+1 y contin�a hasta que la cola se vac�e
+    while (!cola.empty()) //al menos entra una vez al visitar el nodo i+1 y continúa hasta que la cola se vacíe
     {   unsigned k = cola.front(); //cogemos el nodo k+1 de la cola
         cola.pop(); //lo sacamos de la cola
         //Hacemos el recorrido sobre L desde el nodo k+1
         for (unsigned j=0;j<L[k].size();j++)
             //Recorremos todos los nodos u adyacentes al nodo k+1
-            //Si el nodo u no est� visitado
+            //Si el nodo u no está visitado
             {
             //Lo visitamos
             //Lo metemos en la cola
             //le asignamos el predecesor
             //le calculamos su etiqueta distancia
             };
-        //Hemos terminado pues la cola est� vac�a
+        //Hemos terminado pues la cola está vacía
     };
 }
 
-void RecorridoAmplitud(); //Construye un recorrido en amplitud desde un nodo inicial
-{
-    std::cout << "nada" << std::endl; // TEMPORAL
-
+void RecorridoAmplitud(){ //Construye un recorrido en amplitud desde un nodo inicial
+    
 
 }
 

@@ -13,20 +13,20 @@
 void menu (unsigned dirigido, char &opcion)
 //Expresion del menu de opciones segun sea un grafo dirigido o no dirigido
 {
-    cout << "Optimiza!cion en Grafos, 2020-2021 NOMBRE DEL ALUMNO/A" << endl;
+    cout << "Optimiza!cion en Grafos, 2020-2021 Andrés Hernández Ortega" << endl;
     cout << "c. [c]argar grafo desde fichero" << endl;
     if (dirigido == 0) //Grafo no dirigido
             {
             cout << "i. Mostrar [i]nformacion basica del grafo" << endl;
             cout << "a. Mostrar la lista de [a]dyacencia del grafo" << endl;
-	    //Aqu� se a�aden m�s opciones al men� del grafo no dirigido
+	    //Aquí se añaden más opciones al menú del grafo no dirigido
             }
     else
             {
             cout << "i. Mostrar [i]nformacion basica del grafo" << endl;
             cout << "s. Mostrar la lista de [s]ucesores del grafo" << endl;
             cout << "p. Mostrar la lista de [p]redecesores del grafo" << endl;
-	    //Aqu� se a�aden m�s opciones al men� del grafo dirigido
+	    //Aquí se añaden más opciones al menú del grafo dirigido
             };
     cout << "q. Finalizar el programa" << endl;
     cout << "Introduce la letra de la accion a ejecutar  > ";
@@ -34,7 +34,7 @@ void menu (unsigned dirigido, char &opcion)
 };
 
 
-// El principal es simplemente un gestor de menu, diferenciando acciones para dirigido y para no dirigido, y un men� inicial si no hay un grafo cargado
+// El principal es simplemente un gestor de menu, diferenciando acciones para dirigido y para no dirigido, y un menú inicial si no hay un grafo cargado
 int main(int argc, char *argv[])
 {
     int error_apertura;
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
             {
                 case 'c' :
                     //clrscr();
-         	    cout << "Introduce el nombre completo del fichero de datos" << endl;
+         	        cout << "Introduce el nombre completo del fichero de datos" << endl;
                     cin >> nombrefichero;
                     G.actualizar(nombrefichero, error_apertura);
                     if (error_apertura == 1)
@@ -87,14 +87,36 @@ int main(int argc, char *argv[])
 
                 case 'i' :
                     //clrscr();
-		    cout << "Grafo cargado desde " << nombrefichero << endl;
+		            cout << "Grafo cargado desde " << nombrefichero << endl;
                     G.Info_Grafo();
                     //pressanykey();
                     //clrscr();
                     break;
 
-		 //Situar aqu� el resto de opciones del men�
+		 //Situar aquí el resto de opciones del menú
             }
+
+        if (G.Es_dirigido() == 0){
+            switch(opcion){
+                case 'a': 
+                    G.Mostrar_Listas(0);
+                    break;
+            }
+
+        } else {
+
+            switch(opcion){
+                case 's': 
+                    G.Mostrar_Listas(1);
+                    break;
+
+                case 'p':
+                    G.Mostrar_Listas(-1);
+                    break;
+
+            }
+            
+        }
     }
     while (opcion != 'q');
     }
