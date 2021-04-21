@@ -13,6 +13,8 @@
 void menu (unsigned dirigido, char &opcion)
 //Expresion del menu de opciones segun sea un grafo dirigido o no dirigido
 {
+    cout << endl;
+    cout << "////////////////////////////////////////////////////////////" << endl;
     cout << "Optimiza!cion en Grafos, 2020-2021 Andrés Hernández Ortega" << endl;
     cout << "c. [c]argar grafo desde fichero" << endl;
     if (dirigido == 0) //Grafo no dirigido
@@ -28,9 +30,11 @@ void menu (unsigned dirigido, char &opcion)
             cout << "p. Mostrar la lista de [p]redecesores del grafo" << endl;
 	    //Aquí se añaden más opciones al menú del grafo dirigido
             };
+    cout << "m. Realizar un recorrido en a[m]plitud del grafo desde un nodo por sucesores" << endl;
     cout << "q. Finalizar el programa" << endl;
     cout << "Introduce la letra de la accion a ejecutar  > ";
     cin >> opcion;
+    cout << endl;
 };
 
 
@@ -91,6 +95,10 @@ int main(int argc, char *argv[])
                     G.Info_Grafo();
                     //pressanykey();
                     //clrscr();
+                    break;
+
+                case 'm' :
+                    G.RecorridoAmplitud();
                     break;
 
 		 //Situar aquí el resto de opciones del menú
