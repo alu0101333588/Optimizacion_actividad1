@@ -15,17 +15,17 @@ void menu (unsigned dirigido, char &opcion)
 {
     cout << endl;
     cout << "////////////////////////////////////////////////////////////" << endl;
-    cout << "Optimiza!cion en Grafos, 2020-2021 Andrés Hernández Ortega" << endl;
+    cout << "Optimiza!ción en Grafos, 2020-2021, por Andrés Hernández Ortega" << endl;
     cout << "c. [c]argar grafo desde fichero" << endl;
     if (dirigido == 0) //Grafo no dirigido
             {
-            cout << "i. Mostrar [i]nformacion basica del grafo" << endl;
+            cout << "i. Mostrar [i]nformación básica del grafo" << endl;
             cout << "a. Mostrar la lista de [a]dyacencia del grafo" << endl;
 	    //Aquí se añaden más opciones al menú del grafo no dirigido
             }
     else
             {
-            cout << "i. Mostrar [i]nformacion basica del grafo" << endl;
+            cout << "i. Mostrar [i]nformación básica del grafo" << endl;
             cout << "s. Mostrar la lista de [s]ucesores del grafo" << endl;
             cout << "p. Mostrar la lista de [p]redecesores del grafo" << endl;
 	    //Aquí se añaden más opciones al menú del grafo dirigido

@@ -26,7 +26,7 @@ void GRAFO :: destroy()
 }
 
 void GRAFO :: build (char nombrefichero[85], int &errorapertura)
-{
+{   
     ElementoLista     dummy;
 	ifstream textfile;
 	textfile.open(nombrefichero);
@@ -62,6 +62,8 @@ void GRAFO :: build (char nombrefichero[85], int &errorapertura)
                 A[i-1].push_back(dummy);
             }
         }
+    } else {
+        errorapertura = 1;
     }
 
 }
@@ -109,9 +111,7 @@ void GRAFO::Info_Grafo(){
     } else {
         std::cout << "Grafo dirigido" << std::endl;
     }
-    std::cout << std::endl;
     
-
 }
 
 /*void Mostrar_Lista(vector<LA_nodo> L)
@@ -133,7 +133,6 @@ void GRAFO :: Mostrar_Listas (int l){
                 h++;
             }
         }
-        std::cout << std::endl;
     } 
 
     if(l == 0){
@@ -145,7 +144,6 @@ void GRAFO :: Mostrar_Listas (int l){
                 h++;
             }
         }
-        std::cout << std::endl;
     }    
 
     if(l == -1){
@@ -157,7 +155,6 @@ void GRAFO :: Mostrar_Listas (int l){
                 h++;
             }
         }
-        std::cout << std::endl;
     }
 
 }
@@ -203,9 +200,6 @@ void GRAFO::bfs_num(	unsigned i, //nodo desde el que realizamos el recorrido en 
     queue<unsigned> cola; //creamos e inicializamos la cola
     cola.push(i);//iniciamos el recorrido desde el nodo i+1
     
-    int contador = 1;
-    std::cout << "Ramas de conexión en el recorrido" << std::endl;
-
  
     while (!cola.empty()) //al menos entra una vez al visitar el nodo i+1 y continúa hasta que la cola se vacíe
     {   
@@ -219,13 +213,9 @@ void GRAFO::bfs_num(	unsigned i, //nodo desde el que realizamos el recorrido en 
 
             d[i] = -1; // El nodo inicial le ponemos distancia -1 para diferenciar de los que no tienen conexión que poseerían distancia 0
 
-            //cout << "distanciados "  << k+1 << ": " << d[k] << " predecesor: " << pred[k]+1 << " ";
         } else {
             d[k] = d[(pred[k])] + 1; 
-            //cout << "en distancias "  << k+1 << ": " << d[k] << " kpredecesor: " << pred[k]+1 << " ";
         }
-        contador = d[k];
-        //std::cout << std::endl;
 
         for (unsigned j=0;j<L[k].size();j++){
             //Recorremos todos los nodos u adyacentes al nodo k+1
@@ -233,31 +223,7 @@ void GRAFO::bfs_num(	unsigned i, //nodo desde el que realizamos el recorrido en 
 
             int vida = L[k][j].j;
 
-
             pred[vida] = k; // Asignamos su predecesor
-
-
-            unsigned f = vida;
-
-            vector<unsigned> predAlReves(pred.size());
-            int b = 0;
-
-            while(f != i){ // Recorremos toda la lista de predecesores y lo metemos en el vector predAlReves
-
-                predAlReves[b] = pred[f];
-                f = pred[f];
-                b++;
-
-            }
-
-            int u;
-            b = b -1;            
-            for(u = b; u >= 0; u = u - 1){
-
-                std::cout << predAlReves[u]+1 << " - ";
-            }
-            
-            std::cout << vida+1 << std::endl; 
 
             if(visitado[vida] != true){ // Si no está visitado lo añadimos a la cola
                 cola.push(vida);
@@ -275,7 +241,28 @@ void GRAFO::bfs_num(	unsigned i, //nodo desde el que realizamos el recorrido en 
 
     }
 
+}
+
+void GRAFO::RecorridoAmplitud(){ //Construye un recorrido en amplitud desde un nodo inicial
+    int NodoInicial = 0;
+    std::cout << "¿Elija nodo de partida? [1-" << n << "] ";
+    std::cin >> NodoInicial;
+    vector<unsigned> pred;
+	vector<unsigned> d;
+    NodoInicial = NodoInicial - 1;
+    
+    if(dirigido == 1){
+        bfs_num(NodoInicial, LS, pred, d);
+    } else {
+
+        bfs_num(NodoInicial, A, pred, d);
+    }
+    
+
+    // Nodos según distancia al nodo inicial en número de aristas
+
     int tam1 = d.size();
+    int contador = d[tam1-1];
     std::cout << std::endl;
 
     std::cout << "Nodos según distancia al nodo inicial en número de aristas" << std::endl;
@@ -283,7 +270,7 @@ void GRAFO::bfs_num(	unsigned i, //nodo desde el que realizamos el recorrido en 
         if(w == -1){ // El nodo inicial i
             std::cout << "Distancia " << 0 << " aristas";
         } else if(w == 0){ // Nodos que no conectan al nodo i
-            std:cout << "";
+            std::cout;
         } else {
             std::cout << "Distancia " << w << " aristas";
         }
@@ -297,33 +284,44 @@ void GRAFO::bfs_num(	unsigned i, //nodo desde el que realizamos el recorrido en 
 
             }
         }
-        std::cout << std::endl;
+        if (w == 0){
+            std::cout;
+        } else{
+            std::cout << std::endl;
+        }
+    }
+    
+    std::cout << std::endl;
+    std::cout << "Ramas de conexión en el recorrido" << std::endl;
+    int b = 0, j;
+
+    for(int i = 0; i < n; i++){
+        j = i;
+        if(d[i] == 0 || d[i] == -1){
+            std::cout;
+        } else {
+            b = 0;
+            vector<unsigned> predAlReves(pred.size());
+            predAlReves[b] = pred[j];
+            while(j != NodoInicial){ // Recorremos toda la lista de predecesores y lo metemos en el vector predAlReves
+
+                j = pred[j];
+                b++;
+                predAlReves[b] = pred[j];
+            }
         
 
-    }
-}
+            b = b -1;            
+            for(int u = b; u >= 0; u = u - 1){
+                std::cout << predAlReves[u]+1 << " - ";
+            }
+            
+            std::cout << i+1 << std::endl; 
 
-void GRAFO::RecorridoAmplitud(){ //Construye un recorrido en amplitud desde un nodo inicial
-    int NodoInicial = 0;
-    std::cout << "Dime el nodo inicial: ";
-    std::cin >> NodoInicial;
-    vector<unsigned> pred;
-	vector<unsigned> d;
-    NodoInicial = NodoInicial - 1;
-    /*pred.resize(n, 0); //creamos e inicializamos pred y d
-    d.resize(n, 0);
-    pred[NodoInicial] = NodoInicial;
-    d[NodoInicial] = 0;*/
-
-    //bfs_num(NodoInicial, LS, pred, d);
-    
-    if(dirigido == 1){
-        bfs_num(NodoInicial, LS, pred, d);
-    } else {
-        bfs_num(NodoInicial, A, pred, d);
+        }
     }
-    
-    
+
+
 
 }
 
