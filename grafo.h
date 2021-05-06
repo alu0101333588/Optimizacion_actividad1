@@ -55,6 +55,7 @@ public:
      //void RecorridoProfundidad(); //Construye un recorrido en profundidad desde un nodo inicial
      void RecorridoAmplitud(); //Construye un recorrido en amplitud desde un nodo inicial
      ~GRAFO(); //Destructor del objeto grafo
+     void FloydWarshall();
 };
 
 #endif

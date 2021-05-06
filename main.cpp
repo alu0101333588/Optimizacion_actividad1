@@ -31,6 +31,7 @@ void menu (unsigned dirigido, char &opcion)
 	    //Aquí se añaden más opciones al menú del grafo dirigido
             };
     cout << "m. Realizar un recorrido en a[m]plitud del grafo desde un nodo por sucesores" << endl;
+    cout << "f. Algoritmo de [F]loydWarshall" << endl;
     cout << "q. Finalizar el programa" << endl;
     cout << "Introduce la letra de la accion a ejecutar  > ";
     cin >> opcion;
@@ -99,6 +100,10 @@ int main(int argc, char *argv[])
 
                 case 'm' :
                     G.RecorridoAmplitud();
+                    break;
+
+                case 'f':
+                    G.FloydWarshall();
                     break;
 
 		 //Situar aquí el resto de opciones del menú

@@ -210,7 +210,6 @@ void GRAFO::bfs_num(	unsigned i, //nodo desde el que realizamos el recorrido en 
         
         if(pred[k] == i){ // Asignamos la distancia de los nodos respecto a la i, utilizando la lista de sucesores
             d[k] = 1;
-
             d[i] = -1; // El nodo inicial le ponemos distancia -1 para diferenciar de los que no tienen conexión que poseerían distancia 0
 
         } else {
@@ -262,11 +261,18 @@ void GRAFO::RecorridoAmplitud(){ //Construye un recorrido en amplitud desde un n
     // Nodos según distancia al nodo inicial en número de aristas
 
     int tam1 = d.size();
-    int contador = d[tam1-1];
+    int contador = 0;  // = d[tam1-1];
+    for(int i = 0; i < tam1; i++){
+        if(d[i] != 0 ){
+            contador = d[i];
+        }
+    }
     std::cout << std::endl;
+
 
     std::cout << "Nodos según distancia al nodo inicial en número de aristas" << std::endl;
     for(int w = -1; w < contador+1; w++){ // Imprimimos las distancias
+        //std::cout << " w vale " << w << std::endl;
         if(w == -1){ // El nodo inicial i
             std::cout << "Distancia " << 0 << " aristas";
         } else if(w == 0){ // Nodos que no conectan al nodo i
@@ -274,6 +280,7 @@ void GRAFO::RecorridoAmplitud(){ //Construye un recorrido en amplitud desde un n
         } else {
             std::cout << "Distancia " << w << " aristas";
         }
+
         for(int j = 0; j < tam1; j++){
             if(d[j] == w){
                 if (w == 0){
@@ -326,9 +333,78 @@ void GRAFO::RecorridoAmplitud(){ //Construye un recorrido en amplitud desde un n
 }
 
 
+void GRAFO::FloydWarshall(){ //Algoritmo de FW paracaminos mínimos entre cualquier par de nodos
+    vector<LA_nodo> P;
+    //Usaremos la misma estructura de datos de LS para guardar P y D
+    //Inicializamos P y D en P
+    //Creamos P
+    P.resize(n); //Ya tenemos las posiciones P[0]a P[n-1]
+
+    for (unsigned i=0; i<n; i++) P[i].resize(n); //Ya tenemos la matriz cuadrada
+    for (unsigned i=0;i<n;i++){
+        for (unsigned j=0;j<n;j++){
+            if (i != j){ //Inicialización base
+                P[i][j].j = -1; //en el campo .j ponemos el predecesor
+                P[i][j].c = maxint; // en el campo .c ponemos el coste
+            } else { //Inicializamos los bucles
+                P[i][j].c = 0; //El coste en el caso de un bucle
+                P[i][j].j = i; //El predecesor en el casode un bucle
+            }
+
+        }
+    }
+    
+    //Recorremos LS para inicializar P, su predecesor en .j y su distancia en .c
+    for (unsigned i=0;i<n;i++){
+        for (unsigned j=0;j<LS[i].size();j++){
+            P[i][LS[i][j].j].j = i;
+            P[i][LS[i][j].j].c= LS[i][j].c;
+            //std::cout << "prueba " << i+1 << " " << j+1 << " | " << P[i][LS[i][j].j].c << " " << P[i][LS[i][j].j].j << std::endl;
+        }
+        //Con las matrices ya inicializadas, vamos ahora a realizar las k comparativas...
+        //Bien, ya tenemos D y P, mostremos las matrices y los caminos mínimos...
+    }
 
 
+    for(int k= 0; k < n; k++){
+        for(int i = 0; i < n; i++){
+            if(i != k){
+                for(int j=0; j < n; j++){
+                    if(j != k){
+                        if(P[i][j].c > P[i][k].c + P[k][j].c){
+                            P[i][j].c = P[i][k].c + P[k][j].c;
+                            P[i][j].j = P[k][j].j;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    std::cout << "--------- d ---------------- P --------------" << std::endl;
+    //std::cout << "    1 2 3 4 | 1 2 3 4" << std::endl;
+    for (unsigned i=0;i<n;i++){
+        std::cout << i +1 << " | ";
+        for (unsigned j=0;j<P[i].size();j++){
+            if(P[i][j].c >= 1000000){
+                std::cout << "∞ ";
+            } else {
+
+            //std::cout << P[i][LS[i][j].j].c << " ";
+            std::cout << P[i][j].c << " ";
+            }
+        }
+        std::cout << " | ";
+        for (unsigned j=0;j<P[i].size();j++){
+            if(P[i][j].j == -1){
+                std::cout << 0 << " ";
+            } else{
+                std::cout << P[i][j].j +1 << " ";
+            }
+        }
+        std::cout << std::endl;
+        
+    }
 
 
-
-
+}
