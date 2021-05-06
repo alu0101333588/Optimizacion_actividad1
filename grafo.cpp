@@ -114,6 +114,7 @@ void GRAFO::Info_Grafo(){
     
 }
 
+
 /*void Mostrar_Lista(vector<LA_nodo> L)
 {
 
@@ -359,7 +360,6 @@ void GRAFO::FloydWarshall(){ //Algoritmo de FW paracaminos mínimos entre cualqu
         for (unsigned j=0;j<LS[i].size();j++){
             P[i][LS[i][j].j].j = i;
             P[i][LS[i][j].j].c= LS[i][j].c;
-            //std::cout << "prueba " << i+1 << " " << j+1 << " | " << P[i][LS[i][j].j].c << " " << P[i][LS[i][j].j].j << std::endl;
         }
         //Con las matrices ya inicializadas, vamos ahora a realizar las k comparativas...
         //Bien, ya tenemos D y P, mostremos las matrices y los caminos mínimos...
@@ -381,20 +381,70 @@ void GRAFO::FloydWarshall(){ //Algoritmo de FW paracaminos mínimos entre cualqu
         }
     }
 
-    std::cout << "--------- d ---------------- P --------------" << std::endl;
+    //std::cout << "--------- d ---------------- P --------------" << std::endl;
     //std::cout << "    1 2 3 4 | 1 2 3 4" << std::endl;
+
+    //IMPRESIÓN POR PANTALLA:
+
+    //PARTE ESTÉTICA DE LA TABLA DE COSTES Y PREDECESORES
+    std::cout << std::endl << "_____";
+    int tam = n/2;
+
+    for(int y = 0; y < n; y++){
+        if(y == tam){
+            std::cout << "d";
+        }
+        std::cout << "__";
+    }
+    std::cout << "|";
+    for(int y = 0; y < n; y++){
+        if(y == tam){
+            std::cout << "pred";
+        }
+        std::cout << "__";
+    }
+
+    std::cout << std::endl << "  || ";
+    for(int z = 1; z <= n; z++){
+        std::cout << z << " ";
+    }
+
+    std::cout << " | ";
+    for(int z = 1; z <= n; z++){
+        std::cout << z << " ";
+    }
+
+    std::cout << std::endl;
+
+
+    // IMPRESIÓN POR PANTALLA DE LOS VALORES NUMÉRICOS
+    int espaciado = 0;
     for (unsigned i=0;i<n;i++){
-        std::cout << i +1 << " | ";
+        std::cout << i +1 << " || ";
         for (unsigned j=0;j<P[i].size();j++){
-            if(P[i][j].c >= 1000000){
+            if(P[i][j].c >= maxint){
                 std::cout << "∞ ";
             } else {
 
             //std::cout << P[i][LS[i][j].j].c << " ";
+            /*if(P[i][j].c == -1){
+                std::cout << 0 << " ";
+            } else{
+                std::cout << P[i][j].c << " ";
+            }*/
+
             std::cout << P[i][j].c << " ";
+            espaciado = P[i][j].c;
+
             }
         }
-        std::cout << " | ";
+
+        if(espaciado >= 10){
+            std::cout << "| ";
+        } else{
+            std::cout << " | ";
+        }
+
         for (unsigned j=0;j<P[i].size();j++){
             if(P[i][j].j == -1){
                 std::cout << 0 << " ";
@@ -404,6 +454,52 @@ void GRAFO::FloydWarshall(){ //Algoritmo de FW paracaminos mínimos entre cualqu
         }
         std::cout << std::endl;
         
+    }
+
+    //Ruta de caminos mínimos posibles
+    std::cout << std::endl << "Ruta de caminos mínimos posiles para cada para de nodos i y j (y su coste): " << std::endl;
+    
+    for(int i=0; i < n; i++){
+        for(int z=0; z < n; z++){
+            std::cout << i+1 << " ⮞ " << z+1 << " || ";
+            if(P[i][z].c == maxint){
+                std::cout << "No existen caminos" << std::endl;
+            } else {
+                int x = -1, l = 0;
+                l = z;
+                int repe = 0;
+
+                int b = -1;
+                vector<unsigned> predAlReves(n);
+
+                while(x != i){
+                    
+                    if(z == i){
+                        std::cout << "No existen caminos" << std::endl;
+                        repe = 1;
+                    }
+
+                    b++;
+                    x = P[i][l].j;
+                    predAlReves[b] = P[i][l].j + 1;
+                    //std::cout << " # i: " << i+1 << " l: " << l+1 << ": " << P[i][l].c << " | ";
+                    l = l - 1;
+                    
+                }
+
+                if (repe == 0) {
+                    for(int i= b; i >= 0; i = i - 1){
+                        std::cout << predAlReves[i] << " → ";
+                    }
+
+                    std::cout << z+1;
+                    std::cout << " (" << P[i][z].c << ")";
+                    std::cout << std::endl;
+                }
+
+            }
+        }
+        std::cout << std::endl;
     }
 
 
